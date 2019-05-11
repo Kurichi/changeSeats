@@ -43,3 +43,24 @@ const memberName = [
     '芳岡', 
     'ダニエル'
 ];
+
+const mysql = require('mysql');
+const path = require('path');
+const querystring = require('querystring');
+const fs = require('fs');
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'changeSeats',
+    password: 'password',   // change to your password
+    database: 'changeseatsdb'
+});
+
+connection.connect(function (err) {
+    if (err){
+        console.log('error connecting: ' + err.stack);
+        return;
+    }
+    console.log('connected as id ' + connection.threadId);
+});
