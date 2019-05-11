@@ -12,7 +12,26 @@ const password = 'Kurichi120286';
 const positionList = [];
 const list = [];
 const ml = require('./memberList.js');
-const db = require('./mysql.js');
+
+const mysql = require('mysql');
+const path = require('path');
+const querystring = require('querystring');
+
+const connection = mysql.createConnection({
+    host: 'localhost',
+    port: 3306,
+    user: 'changeSeats',
+    password: 'password',   // change to your password
+    database: 'changeseatsdb'
+});
+
+connection.connect(function (err) {
+    if (err){
+        console.log('error connecting: ' + err.stack);
+        return;
+    }
+    console.log('connected as id ' + connection.threadId);
+});
 
 // 乱数生成(整数)
 function secureRandom(){
