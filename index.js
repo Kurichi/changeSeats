@@ -11,7 +11,7 @@ const nBytes = 4;
 const password = 'Kurichi120286';
 const positionList = [];
 const list = [];
-const ml = require('/index.js');
+const ml = require('./my_modules/index.js');
 
 // 乱数生成(整数)
 function secureRandom(){
