@@ -98,6 +98,10 @@ io.on('connection', (socket) => {
             console.log('id error');
             return;
         }
+        if (id < 1 || 43 < i){
+            console.log('id error2');
+            return;
+        }
         if (list.indexOf(position) == -1){
             console.log('position error');
             return;
