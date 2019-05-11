@@ -3,10 +3,6 @@ const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
-const multer = require('multer');
-const fs = require('fs');
-
-app.use(multer().none());
 app.use(express.static('docs'));
 
 const crypto = require('crypto');
@@ -15,14 +11,7 @@ const nBytes = 4;
 const password = 'Kurichi120286';
 const positionList = [];
 const list = [];
-const memberName = [
-    '飯田', '伊垢離', '石井', '石津', '上田', '太田す', '太田ゆ',
-    '岡村', '小川', '尾元', '勝弘', '金田', '久保', '栗原',
-    '近藤', '佐藤', '定森', '柴田', '嶋岡', '新定', '鈴川', '諏訪',
-    '田口', '田崎', '田中', '寺岡', '西本', '久角', '日高',
-    '廣澤', '藤井', '藤岡', '藤本', '的場', '峯', '宮下',
-    '宮野', '宗野', '森野', '山加', '山野', '芳岡', 'ダニエル'
-];
+const ml = require('/index.js');
 
 // 乱数生成(整数)
 function secureRandom(){
@@ -40,15 +29,6 @@ function setList(num){
     }
 }
 
-// ローカルから席情報を取得
-function loadSeats(){
-    const result = JSON.parse(fs.readFileSync('seats.json', 'utf8'));
-    result.forEach(element => {
-        positionList.push(element);
-        list.splice(element.position, 1);
-    });
-}
-
 // 席決め
 function setSeats(myId){
 
@@ -64,22 +44,13 @@ function setSeats(myId){
     const n = list[x];
     const temp = {
         id : myId,
-        name : memberName[myId - 1],
+        name : ml.memberName[myId - 1],
         position : n
     }
     positionList.push(temp);
 
     // リストのx番目を削除
     list.splice(x, 1);
-
-    // 全員分終わったらjsonに保存
-    // if (list.length == 0){
-    //     fs.writeFile('seats.json', JSON.stringify(positionList), function(err, result){
-    //         if(err){
-    //             console.log('error:', err);
-    //         }
-    //     });
-    // }
 
     // 位置を返す
     return n;
@@ -101,7 +72,7 @@ io.on('connection', (socket) => {
         // 返り値
         const retJson = {
             id : parseInt(id),
-            name : memberName[id - 1],
+            name : ml.memberName[id - 1],
             position : parseInt(n)
         };
         console.log(retJson);
@@ -136,7 +107,7 @@ io.on('connection', (socket) => {
         // vue側に返す
         const retJson = {
             id : id,
-            name : memberName[id - 1],
+            name : ml.memberName[id - 1],
             position : position
         };
         positionList.push(retJson);
