@@ -8,7 +8,7 @@ app.use(express.static('docs'));
 const crypto = require('crypto');
 const nBytes = 4;
 
-const password = 'Kurichi120286';
+const password = '*************';
 const positionList = [];
 const list = [];
 const ml = require('./memberList.js');
