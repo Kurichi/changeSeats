@@ -1,0 +1,11 @@
+{
+  "name": "change-seats-socket",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0",
+    "vue-property-decorator": "^8.1.0"
+  }
+}
