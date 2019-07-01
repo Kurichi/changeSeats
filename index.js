@@ -11,7 +11,7 @@ const nBytes = 4;
 const password = '*************';
 const positionList = [];
 const list = [];
-const ml = require('./memberList.js');
+memberList = [];
 
 const mysql = require('mysql');
 const path = require('path');
@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
     host: 'localhost',
     port: 3306,
     user: 'changeSeats',
-    password: 'password',   // change to your password
+    password: 'Mike0806',   // change to your password
     database: 'changeseatsdb'
 });
 
@@ -31,6 +31,17 @@ connection.connect(function (err) {
         return;
     }
     console.log('connected as id ' + connection.threadId);
+});
+
+connection.query("select * from memberlist", function(err, rows, field) {
+    if(err){
+        console.log(err);
+        return;
+    }
+
+    for(value of rows){
+        memberList.push(value.name);
+    }
 });
 
 // 乱数生成(整数)
@@ -64,7 +75,7 @@ function setSeats(myId){
     const n = list[x];
     const temp = {
         id : myId,
-        name : ml.memberName[myId - 1],
+        name : memberList[myId - 1],
         position : n
     }
     positionList.push(temp);
@@ -92,7 +103,7 @@ io.on('connection', (socket) => {
         // 返り値
         const retJson = {
             id : parseInt(id),
-            name : ml.memberName[id - 1],
+            name : memberList[id - 1],
             position : parseInt(n)
         };
         console.log(retJson);
@@ -131,7 +142,7 @@ io.on('connection', (socket) => {
         // vue側に返す
         const retJson = {
             id : id,
-            name : ml.memberName[id - 1],
+            name : memberList[id - 1],
             position : position
         };
         positionList.push(retJson);
