@@ -44,6 +44,12 @@ connection.query("select * from memberlist", function(err, rows, field) {
     }
 });
 
+connection.query("truncate table positionlist;", function(err){
+    if(err){
+        throw(err);
+    }
+});
+
 // 乱数生成(整数)
 function secureRandom(){
     const randomBytes = crypto.randomBytes(nBytes);
@@ -58,6 +64,14 @@ function setList(num){
     for(let i = 0; i < num; i++){
         list.push(i);
     }
+}
+
+function push_positon_db(id, position){
+    connection.query('insert into positionlist values("' + memberList[id - 1] + '", ' + id + ', ' + position + ');', function(err){
+        if(err){
+            console.log(err);
+        }
+    });
 }
 
 // 席決め
@@ -79,7 +93,7 @@ function setSeats(myId){
         position : n
     }
     positionList.push(temp);
-
+    push_positon_db(myId, n);
     // リストのx番目を削除
     list.splice(x, 1);
 
